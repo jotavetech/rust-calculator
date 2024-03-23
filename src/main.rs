@@ -1,5 +1,5 @@
 use gtk::prelude::*;
-use gtk::{Application, ApplicationWindow, Box, Button};
+use gtk::{Application, ApplicationWindow, Box, Button, Entry};
 
 fn main() {
     let app = Application::builder()
@@ -28,18 +28,17 @@ fn main() {
             .build();
 
         for (i, _button) in (1..=10).enumerate() {
-            let button = button_builder(&i.to_string());
-            button.connect_clicked(move |_| eprintln!("Button clicked! {}", &i));
+            let button = button_builder(&i.to_string(), &input);
 
             grid.attach(&button, i as i32 % 3, i as i32 / 3, 1, 1);
         }
 
-        let equal_button = button_builder("=");
-        let clear_button = button_builder("C");
-        let plus_button = button_builder("+");
-        let minus_button = button_builder("-");
-        let multiply_button = button_builder("*");
-        let divide_button = button_builder("/");
+        let equal_button = button_builder("=", &input);
+        let clear_button = button_builder("C", &input);
+        let plus_button = button_builder("+", &input);
+        let minus_button = button_builder("-", &input);
+        let multiply_button = button_builder("*", &input);
+        let divide_button = button_builder("/", &input);
 
         grid.attach(&equal_button, 3, 3, 1, 1);
         grid.attach(&clear_button, 3, 0, 1, 1);
@@ -56,10 +55,23 @@ fn main() {
     app.run();
 }
 
-fn button_builder(label: &str) -> Button {
+fn button_builder(label: &str, input: &Entry) -> Button {
     let button = Button::with_label(label);
     button.set_vexpand(true);
     button.set_hexpand(true);
 
+    let label_cloned = label.to_string();
+    let input_cloned = input.clone();
+
+    button.connect_clicked(move |_| get_button_input(&label_cloned, &input_cloned));
+
     button
+}
+
+fn get_button_input(value: &str, input: &Entry) {
+    let current_text = input.text();
+    let new_text = format!("{}{}", current_text, value);
+    input.set_text(&new_text);
+
+    eprintln!("Button clicked! {}", value);
 }
