@@ -1,3 +1,4 @@
+use evalexpr::*;
 use gtk::prelude::*;
 use gtk::{Application, ApplicationWindow, Box, Button, Entry};
 
@@ -71,7 +72,20 @@ fn button_builder(label: &str, input: &Entry) -> Button {
 fn get_button_input(value: &str, input: &Entry) {
     let current_text = input.text();
     let new_text = format!("{}{}", current_text, value);
-    input.set_text(&new_text);
 
-    eprintln!("Button clicked! {}", value);
+    if value == "C" {
+        input.set_text("");
+        return;
+    }
+
+    if value == "=" {
+        if let Ok(result) = eval(&current_text) {
+            input.set_text(&result.to_string());
+        } else {
+            input.set_text("Error");
+        }
+        return;
+    }
+
+    input.set_text(&new_text);
 }
