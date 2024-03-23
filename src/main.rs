@@ -16,6 +16,9 @@ fn main() {
             .title("The Best Calculator Ever!")
             .build();
 
+        win.set_position(gtk::WindowPosition::CenterAlways);
+        win.set_resizable(false);
+
         let vbox = Box::new(gtk::Orientation::Vertical, 0);
         win.add(&vbox);
 
