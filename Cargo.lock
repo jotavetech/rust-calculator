@@ -518,7 +518,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust_notes_test"
+name = "rust_calculator"
 version = "0.1.0"
 dependencies = [
  "evalexpr",
