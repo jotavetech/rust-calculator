@@ -3,7 +3,7 @@ use gtk::{Application, ApplicationWindow, Box, Button};
 
 fn main() {
     let app = Application::builder()
-        .application_id("org.jotavetech.HelloWorld")
+        .application_id("org.jotavetech.Calculator")
         .build();
 
     app.connect_activate(|app| {
@@ -12,7 +12,7 @@ fn main() {
             .application(app)
             .default_width(360)
             .default_height(500)
-            .title("Hello, World! Im Jotavetech")
+            .title("The Best Calculator Ever!")
             .build();
 
         let vbox = Box::new(gtk::Orientation::Vertical, 0);
@@ -28,37 +28,18 @@ fn main() {
             .build();
 
         for (i, _button) in (1..=10).enumerate() {
-            let button = Button::with_label(&i.to_string());
-            button.set_vexpand(true);
-            button.set_hexpand(true);
+            let button = button_builder(&i.to_string());
             button.connect_clicked(move |_| eprintln!("Button clicked! {}", &i));
 
             grid.attach(&button, i as i32 % 3, i as i32 / 3, 1, 1);
         }
 
-        let equal_button = Button::with_label("=");
-        equal_button.set_vexpand(true);
-        equal_button.set_hexpand(true);
-
-        let clear_button = Button::with_label("C");
-        clear_button.set_vexpand(true);
-        clear_button.set_hexpand(true);
-
-        let plus_button = Button::with_label("+");
-        plus_button.set_vexpand(true);
-        plus_button.set_hexpand(true);
-
-        let minus_button = Button::with_label("-");
-        minus_button.set_vexpand(true);
-        minus_button.set_hexpand(true);
-
-        let multiply_button = Button::with_label("*");
-        multiply_button.set_vexpand(true);
-        multiply_button.set_hexpand(true);
-
-        let divide_button = Button::with_label("/");
-        divide_button.set_vexpand(true);
-        divide_button.set_hexpand(true);
+        let equal_button = button_builder("=");
+        let clear_button = button_builder("C");
+        let plus_button = button_builder("+");
+        let minus_button = button_builder("-");
+        let multiply_button = button_builder("*");
+        let divide_button = button_builder("/");
 
         grid.attach(&equal_button, 3, 3, 1, 1);
         grid.attach(&clear_button, 3, 0, 1, 1);
@@ -73,4 +54,12 @@ fn main() {
     });
 
     app.run();
+}
+
+fn button_builder(label: &str) -> Button {
+    let button = Button::with_label(label);
+    button.set_vexpand(true);
+    button.set_hexpand(true);
+
+    button
 }
